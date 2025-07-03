@@ -1,0 +1,27 @@
+name: CI for develop branch
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  linting-develop-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+
+      - name: Lint HTML files (HTMLHint)
+        run: npx htmlhint "**/*.html"
+
+      - name: Lint CSS files (Stylelint)
+        run: npx stylelint "**/*.css"
+
+      - name: Test Building With Parcel
+        run: npx parcel build "./src/index.html" --dist-dir "./dist" --public-url "./"
